@@ -4,6 +4,7 @@ $email=$data['email']??null;
 $password=$data['password']??null;
 $program=$data['program']??null;
 if(empty($email) || empty($password) || empty($program)){
+        // ito yung respons sa URL
     http_response_code(400);
     echo json_encode([
         "status"=>"failed",
@@ -11,6 +12,8 @@ if(empty($email) || empty($password) || empty($program)){
     ]);
     exit();
 }
+
+// Ito naman yung Sa Email Validation
 if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
     http_response_code(400);
     echo json_encode([
@@ -27,7 +30,7 @@ if(strlen($password)<8){
     ]);
     exit();
 }
-
+        // Ito naman yung hashPassword
 try{
     $hashPassword=password_hash($password,PASSWORD_DEFAULT);
     $sql="INSERT INTO users(email,password,program) VALUES(?,?,?)";

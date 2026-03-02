@@ -6,6 +6,8 @@ if(empty($id)){
     );
     exit();
 }
+
+    // ito naman yung not found
 try{
     $sql="DELETE FROM users where id=?";
     $stmt=$conn->prepare($sql);
@@ -20,14 +22,15 @@ try{
         ]);
 
     }
+    // ito yung message once nag success yung account mo 
     else{
         http_response_code(200);
         echo json_encode([
             "status"=>"success",
-            "message"=>"Acount is Deleted"
+            "message"=>"Account is Deleted"
         ]);
     }
-
+//  ito naman yung PDOException
 }
 catch(PDOException $e){
     echo json_encode([

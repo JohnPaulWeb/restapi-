@@ -1,65 +1,62 @@
-<?php
-$data=json_decode(file_get_contents("php://input"), true);
+<?php 
+$data=json_decode(file_get_contents("php://input"),true);
 $email=$data['email']??null;
 $password=$data['password']??null;
 $program=$data['program']??null;
-if(empty($email) || empty($password) || empty($program))
-  if(empty($id)){
-    http_response_code(400);
+if(empty($id)){
+ http_response_code(400);
     echo json_encode([
         "status"=>"failed",
-        "message"=>"Missing Id"
+        "message"=>"Missing ID"
     ]);
-  }
-if($email1==null &&!filter_var($email,FILTER_VALIDATE_EMAIL)){
-    http_response_code(400);
+    exit();
+}
+//in edit we need to put this another condition because if your not editing the email it will become null
+//null is not a valid email same in password
+if($email!=null && !filter_var($email,FILTER_VALIDATE_EMAIL)){
+   http_response_code(400);
     echo json_encode([
         "status"=>"failed",
         "message"=>"Invalid Email"
     ]);
     exit();
 }
-
-
 if($password!=null && strlen($password)<8){
-    http_response_code(400);
+     http_response_code(400);
     echo json_encode([
         "status"=>"failed",
-        "message"=>"Password must be 8"
+        "message"=>"Password must be 8 char long"
     ]);
     exit();
 }
-
-try{
+try{    
     $hashPassword=password_hash($password,PASSWORD_DEFAULT);
-$sql="UPDATE users SET email=COALESCE(?,email), password=COALESCE(?,password), 
-    program=COALESCE(?,program) WHERE id=?";
-    $stmt=$conn->prepare($sql);
-    $stmt->execute([
-        $email,$hashPassword,$program,$id
+$sql="UPDATE users SET email=COALESCE(?,email), password=COALESCE(?,password),
+        program=COALESCE(?,program) WHERE id=?";
+$stmt=$conn->prepare($sql);
+$stmt->execute([
+    $email,$hashPassword,$program,$id
     ]);
     if($stmt->rowCount()==0){
         http_response_code(400);
         echo json_encode([
-             "status"=>"failed",
-        "message"=>"No Record for this Id"
+            "status"=>"failed",
+            "message"=>"No Record for this ID"
         ]);
+
     }
-    else {
+    else{
+        http_response_code(200);
         echo json_encode([
-             "status"=>"Success",
-        "message"=>"Account is Updated"
+            "status"=>"success",
+            "message"=>"Acount is updated"
         ]);
     }
 }
-
-catch(PDOException $e) {
-    echo json_encode([
+catch(PDOException $e){
+     echo json_encode([
         "status"=>"failed",
         "message"=>$e->getMessage()
     ]);
 }
-
-
-
 ?>
