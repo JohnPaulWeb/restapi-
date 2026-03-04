@@ -1,5 +1,4 @@
 <?php
-
 try{
 $sql="SELECT * FROM users";
 $stmt=$conn->prepare($sql);
@@ -12,19 +11,16 @@ if($stmt->rowCount()==0){
         "message"=>"No records found"
     ]);
 }
-else {
+else{
     http_response_code(200);
     echo json_encode($results);
 }
-
 }
-
 catch(PDOException $e){
     echo json_encode([
         "status"=>"failed",
         "message"=>$e->getMessage()
     ]);
 }
-
 
 ?>

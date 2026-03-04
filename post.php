@@ -1,10 +1,9 @@
-<?php
-$data=json_decode(file_get_contents("php://input"), true);
+<?php 
+$data=json_decode(file_get_contents("php://input"),true);
 $email=$data['email']??null;
 $password=$data['password']??null;
 $program=$data['program']??null;
 if(empty($email) || empty($password) || empty($program)){
-        // ito yung respons sa URL
     http_response_code(400);
     echo json_encode([
         "status"=>"failed",
@@ -12,10 +11,8 @@ if(empty($email) || empty($password) || empty($program)){
     ]);
     exit();
 }
-
-// Ito naman yung Sa Email Validation
 if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
-    http_response_code(400);
+   http_response_code(400);
     echo json_encode([
         "status"=>"failed",
         "message"=>"Invalid Email"
@@ -23,30 +20,29 @@ if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
     exit();
 }
 if(strlen($password)<8){
-    http_response_code(400);
+     http_response_code(400);
     echo json_encode([
         "status"=>"failed",
-        "message"=>"Password must be 8"
+        "message"=>"Password must be 8 char long"
     ]);
     exit();
 }
-        // Ito naman yung hashPassword
-try{
+
+try{  
     $hashPassword=password_hash($password,PASSWORD_DEFAULT);
     $sql="INSERT INTO users(email,password,program) VALUES(?,?,?)";
-    $stmt-$conn->prepare($sql);
+    $stmt=$conn->prepare($sql);
     $stmt->execute([
         $email,$hashPassword,$program
     ]);
     http_response_code(201);
     echo json_encode([
-         "status"=>"Success",
+        "status"=>"success",
         "message"=>"Account Created"
     ]);
 }
-
-catch(PDOException $e) {
-    echo json_encode([
+catch(PDOException $e){
+     echo json_encode([
         "status"=>"failed",
         "message"=>$e->getMessage()
     ]);
