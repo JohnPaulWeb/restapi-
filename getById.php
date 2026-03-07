@@ -1,4 +1,6 @@
 <?php
+
+// ito yung Response ng URL
 if(empty($id)){
     http_response_code(400);
     echo json_encode([
@@ -7,6 +9,8 @@ if(empty($id)){
     ]);
     exit();
 }
+
+// ito yung  MYSQL
 
 try{
     $sql = "SELECT * FROM users WHERE id = ?";

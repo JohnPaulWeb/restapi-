@@ -1,4 +1,6 @@
 <?php
+
+// ito yung SQL ng GET ALL USERS
 try{
 $sql="SELECT * FROM users";
 $stmt=$conn->prepare($sql);
