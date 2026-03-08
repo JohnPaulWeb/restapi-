@@ -29,6 +29,8 @@ if($password!=null && strlen($password)<8){
     ]);
     exit();
 }
+
+// ito yung Passwordhash
 try{    
     $hashPassword=password_hash($password,PASSWORD_DEFAULT);
 $sql="UPDATE users SET email=COALESCE(?,email), password=COALESCE(?,password),

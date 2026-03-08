@@ -11,6 +11,8 @@ if(empty($email) || empty($password) || empty($program)){
     ]);
     exit();
 }
+
+// Ito yung Email Validation at Password Validation
 if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
    http_response_code(400);
     echo json_encode([

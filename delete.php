@@ -6,6 +6,8 @@ if(empty($id)){
     );
     exit();
 }
+
+// ito yung Delete SQL
 try{
     $sql="DELETE FROM users where id=?";
     $stmt=$conn->prepare($sql);
